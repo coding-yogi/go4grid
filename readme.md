@@ -12,6 +12,8 @@ Golang based commadline tool to spin up Selenium 4 Grid on Kubernetes within sec
 
 ## Using go4grid
 Currently available commands
+
+### start
  ```
 ./go4grid start --help        
 start up selenium 4 grid hub and nodes
@@ -26,6 +28,7 @@ Flags:
       --namespace string   kube namespace (default "default")
  ```
 
+### terminate
  ```
  ./go4grid terminate --help
 cleans up selenium 4 grid hub and nodes
