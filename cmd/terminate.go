@@ -27,6 +27,10 @@ var terminateCmd = &cobra.Command{
 	},
 }
 
+func init() {
+	terminateCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
+}
+
 func triggerDeploymentDeletion(grid *grid.Grid, name string, wg *sync.WaitGroup) {
 	grid.DeleteDeployment(name)
 	wg.Done()
@@ -35,8 +39,4 @@ func triggerDeploymentDeletion(grid *grid.Grid, name string, wg *sync.WaitGroup)
 func triggerHubServiceDeletion(grid *grid.Grid, wg *sync.WaitGroup) {
 	grid.DeleteHubService()
 	wg.Done()
-}
-
-func init() {
-	terminateCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
 }

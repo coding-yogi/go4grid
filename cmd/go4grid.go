@@ -18,4 +18,5 @@ func Execute() error {
 func init() {
 	rootCmd.AddCommand(startCmd)
 	rootCmd.AddCommand(terminateCmd)
+	rootCmd.AddCommand(statusCmd)
 }

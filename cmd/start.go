@@ -45,13 +45,13 @@ var startCmd = &cobra.Command{
 	},
 }
 
-func triggerNodeDeployment(grid *grid.Grid, browser string, expReplicas int32, wg *sync.WaitGroup) {
-	grid.HandleNodeDeployment(browser, expReplicas)
-	wg.Done()
-}
-
 func init() {
 	startCmd.Flags().Int32Var(&Chrome, "chrome", 1, "number of chrome nodes")
 	startCmd.Flags().Int32Var(&Firefox, "firefox", 1, "number of firefox nodes")
 	startCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
+}
+
+func triggerNodeDeployment(grid *grid.Grid, browser string, expReplicas int32, wg *sync.WaitGroup) {
+	grid.HandleNodeDeployment(browser, expReplicas)
+	wg.Done()
 }

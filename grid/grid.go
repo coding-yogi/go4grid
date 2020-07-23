@@ -271,6 +271,16 @@ func (grid *Grid) HandleHubService() error {
 	return nil
 }
 
-func (grid *Grid) CleanUp() {
+func (grid *Grid) GetAllDeployments() []appsv1.Deployment {
 
+	var deployments []appsv1.Deployment
+	browsers := [3]string{"hub", "chrome", "firefox"}
+	for d := 0; d < len(browsers); d++ {
+		deployment, _ := grid.GetDeployment(browsers[d])
+		if len(deployment.Items) > 0 {
+			deployments = append(deployments, deployment.Items[0])
+		}
+	}
+
+	return deployments
 }
