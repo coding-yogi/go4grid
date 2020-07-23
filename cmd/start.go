@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var Chrome, Firefox int32
+var ChromeF, FirefoxF int32
 
 var startCmd = &cobra.Command{
 	Use:   "start",
@@ -16,9 +16,9 @@ var startCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		//flags
-		chromeNodes, _ := cmd.Flags().GetInt32("chrome")
-		firefoxNodes, _ := cmd.Flags().GetInt32("firefox")
-		namespace, _ := cmd.Flags().GetString("namespace")
+		chromeNodes, _ := cmd.Flags().GetInt32(CHROME)
+		firefoxNodes, _ := cmd.Flags().GetInt32(FIREFOX)
+		namespace, _ := cmd.Flags().GetString(NAMESPACE)
 
 		fmt.Printf("go4grid: starting grid deployment for %d chrome nodes and %d firefox nodes\n", chromeNodes, firefoxNodes)
 
@@ -39,16 +39,16 @@ var startCmd = &cobra.Command{
 		//Node Deployment
 		var wg sync.WaitGroup
 		wg.Add(2)
-		go triggerNodeDeployment(&grid, "chrome", chromeNodes, &wg)
-		go triggerNodeDeployment(&grid, "firefox", firefoxNodes, &wg)
+		go triggerNodeDeployment(&grid, CHROME, chromeNodes, &wg)
+		go triggerNodeDeployment(&grid, FIREFOX, firefoxNodes, &wg)
 		wg.Wait()
 	},
 }
 
 func init() {
-	startCmd.Flags().Int32Var(&Chrome, "chrome", 1, "number of chrome nodes")
-	startCmd.Flags().Int32Var(&Firefox, "firefox", 1, "number of firefox nodes")
-	startCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
+	startCmd.Flags().Int32Var(&ChromeF, CHROME, 1, "number of chrome nodes")
+	startCmd.Flags().Int32Var(&FirefoxF, FIREFOX, 1, "number of firefox nodes")
+	startCmd.Flags().StringVar(&Namespace, NAMESPACE, "default", "kube namespace")
 }
 
 func triggerNodeDeployment(grid *grid.Grid, browser string, expReplicas int32, wg *sync.WaitGroup) {

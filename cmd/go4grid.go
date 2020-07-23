@@ -6,6 +6,13 @@ import (
 
 var Namespace string
 
+const (
+	CHROME    = "chrome"
+	FIREFOX   = "firefox"
+	HUB       = "hub"
+	NAMESPACE = "namespace"
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "go4grid",
 	Short: "Commandline app to spin up Selenium 4 Grid on Kubernetes",

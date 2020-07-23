@@ -15,21 +15,20 @@ var statusCmd = &cobra.Command{
 	Short: "gets the current state of selenium 4 grid",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		namespace, _ := cmd.Flags().GetString("namespace")
+		namespace, _ := cmd.Flags().GetString(NAMESPACE)
 
 		grid := grid.NewGrid(namespace)
-		deployments := grid.GetAllDeployments()
-		count := len(deployments)
+		browsers := [3]string{HUB, CHROME, FIREFOX}
 
 		table := tablewriter.NewWriter(os.Stdout)
 		table.SetHeader([]string{"Name", "Namespace", "Pods", "Created", "Image"})
 
-		if count == 0 {
-			fmt.Println("No deployments found")
+		for _, browser := range browsers {
 
-		} else {
-			for c := 0; c < count; c++ {
-				deployment := deployments[c]
+			deployments, _ := grid.GetDeployment(browser)
+
+			if len(deployments.Items) > 0 {
+				deployment := deployments.Items[0]
 				name := deployment.GetName()
 				requiredReplicas := deployment.Status.Replicas
 				availableReplicas := deployment.Status.AvailableReplicas
@@ -38,12 +37,12 @@ var statusCmd = &cobra.Command{
 
 				table.Append([]string{name, namespace, fmt.Sprintf("%d/%d", availableReplicas, requiredReplicas), string(createdate), image})
 			}
-
-			table.Render()
 		}
+
+		table.Render()
 	},
 }
 
 func init() {
-	statusCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
+	statusCmd.Flags().StringVar(&Namespace, NAMESPACE, "default", "kube namespace")
 }

@@ -130,7 +130,9 @@ func (grid *Grid) DeleteDeployment(browser string) {
 		name = resources.NodeName + "-" + browser
 	}
 
-	deployments, _ := grid.GetDeployment(name)
+	fmt.Printf("%s: deleting deployment %s\n", browser, name)
+	deployments, _ := grid.GetDeployment(browser)
+
 	if len(deployments.Items) > 0 {
 		err := grid.k8s.DeleteDeployment(name)
 		if err != nil {
@@ -269,18 +271,4 @@ func (grid *Grid) HandleHubService() error {
 	}
 
 	return nil
-}
-
-func (grid *Grid) GetAllDeployments() []appsv1.Deployment {
-
-	var deployments []appsv1.Deployment
-	browsers := [3]string{"hub", "chrome", "firefox"}
-	for d := 0; d < len(browsers); d++ {
-		deployment, _ := grid.GetDeployment(browsers[d])
-		if len(deployment.Items) > 0 {
-			deployments = append(deployments, deployment.Items[0])
-		}
-	}
-
-	return deployments
 }

@@ -13,22 +13,22 @@ var terminateCmd = &cobra.Command{
 	Short: "cleans up selenium 4 grid hub and nodes",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		namespace, _ := cmd.Flags().GetString("namespace")
+		namespace, _ := cmd.Flags().GetString(NAMESPACE)
 		fmt.Println("go4grid: terminating all grid components")
 
 		grid := grid.NewGrid(namespace)
 		var wg sync.WaitGroup
 		wg.Add(4)
-		go triggerDeploymentDeletion(&grid, "chrome", &wg)
-		go triggerDeploymentDeletion(&grid, "firefox", &wg)
-		go triggerDeploymentDeletion(&grid, "hub", &wg)
+		go triggerDeploymentDeletion(&grid, CHROME, &wg)
+		go triggerDeploymentDeletion(&grid, FIREFOX, &wg)
+		go triggerDeploymentDeletion(&grid, HUB, &wg)
 		go triggerHubServiceDeletion(&grid, &wg)
 		wg.Wait()
 	},
 }
 
 func init() {
-	terminateCmd.Flags().StringVar(&Namespace, "namespace", "default", "kube namespace")
+	terminateCmd.Flags().StringVar(&Namespace, NAMESPACE, "default", "kube namespace")
 }
 
 func triggerDeploymentDeletion(grid *grid.Grid, name string, wg *sync.WaitGroup) {
