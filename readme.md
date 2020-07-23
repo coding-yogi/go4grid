@@ -1,5 +1,5 @@
 # Go4Grid
-Golang based commadline tool to spin up Selenium 4 Grid on Kubernetes within seconds
+Golang based commandline tool to spin up Selenium 4 Grid on Kubernetes within seconds
 
 ## Why Go4Grid?
 * Setup, Teardown, Scale up/down grid with single command
